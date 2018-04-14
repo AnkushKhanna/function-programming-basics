@@ -2,6 +2,6 @@
 
 Some practice code for functional programming using Scala.
 
-Reference: 
+### Reference:-
 
-Book: Function Programming in Scala by Chiusano, Bjarnason
+1. Book: Function Programming in Scala by Chiusano, Bjarnason
