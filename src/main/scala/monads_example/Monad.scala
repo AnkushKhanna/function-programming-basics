@@ -27,7 +27,16 @@ trait Monad[F[_]] extends Functors[F] {
   def replicateM[A](n: Int, fa: F[A]): F[List[A]] =
     sequence(List.fill(n)(fa))
 
-//  def filterM[A](ms: List[A])(f: A => F[Boolean]): F[List[A]] =
+  def filterM[A](ls: List[A])(f: A => F[Boolean]): F[List[A]] = {
+    ls.foldLeft(unit(List[A]())) { (acc, a) =>
+      flatMap(f(a)) { bool =>
+        map(acc) { accValue =>
+          if (bool) a :: accValue
+          else accValue
+        }
+      }
+    }
+  }
 
 }
 
