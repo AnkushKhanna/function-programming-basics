@@ -28,15 +28,31 @@ trait Monad[F[_]] extends Functors[F] {
     sequence(List.fill(n)(fa))
 
   def filterM[A](ls: List[A])(f: A => F[Boolean]): F[List[A]] = {
-    ls.foldLeft(unit(List[A]())) { (acc, a) =>
-      flatMap(f(a)) { bool =>
-        map(acc) { accValue =>
-          if (bool) a :: accValue
-          else accValue
+//    ls.foldRight(unit(List[A]())) { (a, acc) =>
+//      flatMap(f(a)) { bool =>
+//        map(acc) { accValue =>
+//          if (bool) {
+//            a :: accValue
+//          }
+//          else {
+//            accValue
+//          }
+//        }
+//      }
+//    }
+    ls.foldRight(unit(List.empty[A])) { (a, mas) =>
+      flatMap(f(a)) { p =>
+        map(mas) { as =>
+          if (p) {
+            a :: as
+          } else {
+            as
+          }
         }
       }
     }
   }
+
 
 }
 
