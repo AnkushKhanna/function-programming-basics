@@ -7,10 +7,27 @@ trait Monad[F[_]] extends Functors[F] {
 
   def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
 
-  override def map[A, B](ma: F[A])(f: A => B): F[B] = flatMap(ma)(a => unit(f(a)))
+  override def map[A, B](ma: F[A])(f: A => B): F[B] =
+    flatMap(ma)(a => unit(f(a)))
 
   def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C] =
     flatMap(fa)(a => map(fb)(b => f(a, b)))
+
+  def sequence[A](la: List[F[A]]): F[List[A]] =
+    la.foldRight(unit(List[A]()))((fa, acc) =>
+      flatMap(fa)(a =>
+        map(acc)(ac =>
+          a :: ac)
+      )
+    )
+
+  def traverse[A, B](la: List[A])(f: A => F[B]): F[List[B]] =
+    sequence(la.map(a => f(a)))
+
+  def replicateM[A](n: Int, fa: F[A]): F[List[A]] =
+    sequence(List.fill(n)(fa))
+
+//  def filterM[A](ms: List[A])(f: A => F[Boolean]): F[List[A]] =
 
 }
 
