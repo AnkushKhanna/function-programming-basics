@@ -17,9 +17,7 @@ object CsvEncoder {
   implicit val doubleEncoder: CsvEncoder[Double] = createEncoder(d => List(d.toString))
   implicit val stringEncoder: CsvEncoder[String] = createEncoder(str => List(str))
   implicit val intEncoder: CsvEncoder[Int] = createEncoder(num => List(num.toString))
-  implicit val booleanEncoder: CsvEncoder[Boolean] = createEncoder(bool =>
-    List(if (bool) "yes" else "no")
-  )
+  implicit val booleanEncoder: CsvEncoder[Boolean] = createEncoder(bool => List(if (bool) "yes" else "no"))
   implicit val hnilEncoder: CsvEncoder[HNil] = createEncoder(hnil => Nil)
 
   val reprEncoder: CsvEncoder[String :: Int :: Boolean :: HNil] = implicitly

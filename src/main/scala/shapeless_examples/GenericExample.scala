@@ -12,7 +12,11 @@ final case class Circle(radius: Double) extends Shape
 
 object GenericExample extends App {
   val gen = Generic[Shape]
+
+  import CsvEncoder._
+
+  println(CsvEncoder[Rectangle])
+
   val r = gen.to(Rectangle(3.0, 4.0))
   println(r)
 }
-
