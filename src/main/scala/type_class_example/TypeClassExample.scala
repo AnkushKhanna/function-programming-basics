@@ -26,19 +26,26 @@ object Show {
 
   }
 
+  import ops._
   implicit val intCanShow: Show[Int] =
     (int: Int) => s"int $int"
 
   implicit val stringCanShow: Show[String] =
     (str: String) => s"string $str"
+
+  implicit def listCanShow[T](implicit impShow: Show[T]): Show[List[T]] =
+    (a: List[T]) => a.map(_.show).mkString(",")
+
 }
 
-object Application extends  App {
+object Application extends App {
 
   import Show.ops._
 
   println(show(20))
   println(20.show)
   println("show".show)
+
+  println(List("a", "b", "c").show)
 
 }
