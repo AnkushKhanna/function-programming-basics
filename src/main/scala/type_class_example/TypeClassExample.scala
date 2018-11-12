@@ -47,5 +47,13 @@ object Application extends App {
   println("show".show)
 
   println(List("a", "b", "c").show)
+  println(List(10, 11, 12).show)
+
+
+  implicit val doubleCanShow: Show[Double] =
+    (d: Double) => s"double $d"
+
+
+  println(List(1.2, 5.9, 6.4).show)
 
 }
